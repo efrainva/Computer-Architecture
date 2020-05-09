@@ -7,9 +7,16 @@ class CPU:
 
     def __init__(self):
         """Construct a new CPU."""
-        pass
+        self.pc = 0
+        self.running = True
+        self.ram = [0] * 255
+        self.reg = []
+    def ram_read(self,id):
+        return self.ram[id]
+
 
     def load(self):
+        
         """Load a program into memory."""
 
         address = 0
@@ -62,4 +69,29 @@ class CPU:
 
     def run(self):
         """Run the CPU."""
-        pass
+        # pt = point in time
+        program = [
+            # From print8.ls8
+            0b10000010, # LDI R0,8
+            0b00000000,
+            0b00001000,
+            0b01000111, # PRN R0
+            0b00000000,
+            0b00000001, # HLT
+        ]
+
+        HLT = 0b00000001
+
+
+        bina = format(8,'b')
+
+        print('binary:',bina,'num input:',8)
+
+        while self.running:
+            command = program[self.pc]
+
+            print(command)
+            self.pc +=1
+
+            if command == HLT:
+                break
