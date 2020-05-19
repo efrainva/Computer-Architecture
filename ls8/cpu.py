@@ -36,7 +36,7 @@ class CPU:
     def CMP(self, reg_a, reg_b):
         
         if self.reg[reg_a] == self.reg[reg_b]:
-            self.fl = "HLT"
+            self.fl = 0b00000001
         elif self.reg[reg_a] > self.reg[reg_b]:
             self.fl = 0b00000010
         else:
@@ -86,11 +86,11 @@ class CPU:
     #         print(" %02X" % self.reg[i], end='')
     #     print()
     def run(self):
-        print(self.pc)
+        # print(self.pc)
         self.running = True 
         while self.running:
             IR = self.ram_read(self.pc)
-            print(self.pc,IR)
+            # print(self.pc,IR)
             operandA = self.ram_read(self.pc + 1)
             operandB = self.ram_read(self.pc + 2)
             opcode = self.opcodes[IR]
@@ -138,13 +138,13 @@ class CPU:
             if opcode == "JMP":
                 self.pc = self.reg[operandA]
             if opcode == "JEQ":
-                if self.fl == "HLT":
+                if self.fl == 0b00000001:
                     self.pc = self.reg[operandA]
                 else:
                     self.pc += 2
             if opcode == "JNE":
-                if self.pc != "HLT":
-                    self.pc = self.reg[operandA]
+                if self.fl != 0b00000001:
+                    self.pc = self.reg[operandA] 
                 else:
                     self.pc += 2
             if opcode == "HLT":
